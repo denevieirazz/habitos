@@ -1,5 +1,5 @@
-// Service Worker para funcionamento 100% offline e sem gastar dados móveis
-const CACHE_NAME = 'habitos-os-v1';
+// Service Worker para funcionamento 100% offline no Modo DeX Launcher
+const CACHE_NAME = 'habitos-dex-v2';
 const ASSETS_TO_CACHE = [
   './',
   './index.html',
@@ -8,8 +8,10 @@ const ASSETS_TO_CACHE = [
   './design/layout.css',
   './design/habitos.css',
   './design/pinpad.css',
-  './design/mini_os.css',
-  './design/componentes.css',
+  './design/dex_layout.css',
+  './design/dex_window.css',
+  './design/dex_taskbar.css',
+  './design/dex_apps.css',
   './logica/modelos/habito_model.js',
   './logica/modelos/arquivo_model.js',
   './logica/modelos/nota_model.js',
@@ -18,13 +20,17 @@ const ASSETS_TO_CACHE = [
   './logica/servicos/idb_storage.js',
   './logica/servicos/habitos_service.js',
   './logica/servicos/session_manager.js',
+  './logica/wm/window_manager.js',
+  './logica/wm/taskbar_controller.js',
+  './logica/apps/app_locker.js',
+  './logica/apps/explorer_app.js',
+  './logica/apps/gallery_app.js',
+  './logica/apps/player_app.js',
+  './logica/apps/notes_app.js',
+  './logica/apps/settings_app.js',
+  './logica/apps/trash_app.js',
   './logica/ui_controllers/habitos_controller.js',
   './logica/ui_controllers/auth_controller.js',
-  './logica/ui_controllers/os_desktop_controller.js',
-  './logica/ui_controllers/explorer_controller.js',
-  './logica/ui_controllers/viewers_controller.js',
-  './logica/ui_controllers/notes_controller.js',
-  './logica/ui_controllers/settings_controller.js',
   './ferramentas/importador.js',
   './ferramentas/shredder.js',
   './ferramentas/backup_manager.js'

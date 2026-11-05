@@ -1,0 +1,170 @@
+/* Barra de Tarefas Estilo DeX / Windows */
+.dex-taskbar {
+  height: 48px;
+  background: rgba(19, 27, 46, 0.95);
+  border-top: 1px solid rgba(51, 65, 85, 0.6);
+  backdrop-filter: blur(12px);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 10px;
+  position: relative;
+  z-index: 1000;
+  user-select: none;
+}
+
+/* Botão Iniciar */
+.dex-start-btn {
+  width: 36px;
+  height: 36px;
+  border-radius: 10px;
+  background: var(--os-accent);
+  color: #000000;
+  border: none;
+  font-size: 18px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  box-shadow: 0 0 10px rgba(0, 229, 255, 0.4);
+  margin-right: 10px;
+  transition: transform 0.1s ease;
+}
+
+.dex-start-btn:active {
+  transform: scale(0.92);
+}
+
+/* Lista de Aplicativos Abertos na Barra */
+.dex-taskbar-apps {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  overflow-x: auto;
+  padding: 0 4px;
+}
+
+.taskbar-app-tab {
+  height: 36px;
+  padding: 0 12px;
+  background: rgba(30, 41, 59, 0.5);
+  border: 1px solid rgba(51, 65, 85, 0.5);
+  border-radius: var(--radius-sm);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: var(--os-text);
+  font-size: 12px;
+  cursor: pointer;
+  white-space: nowrap;
+  max-width: 150px;
+  position: relative;
+  transition: background-color 0.15s ease;
+}
+
+.taskbar-app-tab.active {
+  background: rgba(30, 41, 59, 0.9);
+  border-color: var(--os-accent);
+}
+
+.taskbar-app-tab.active::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 6px;
+  right: 6px;
+  height: 2px;
+  background: var(--os-accent);
+  border-radius: 2px;
+}
+
+.tab-icon {
+  font-size: 15px;
+}
+
+.tab-title {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* Bandeja do Sistema / System Tray */
+.dex-tray {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-left: 10px;
+}
+
+.tray-clock {
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--os-text);
+  letter-spacing: 0.5px;
+}
+
+.tray-lock-btn {
+  background: rgba(239, 68, 68, 0.15);
+  border: 1px solid rgba(239, 68, 68, 0.4);
+  color: var(--os-danger);
+  font-size: 11px;
+  font-weight: 700;
+  padding: 4px 8px;
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+/* Menu Iniciar / App Drawer */
+.dex-start-menu {
+  position: absolute;
+  bottom: 56px;
+  left: 10px;
+  width: 280px;
+  background: rgba(19, 27, 46, 0.95);
+  border: 1px solid var(--os-border);
+  border-radius: var(--radius-lg);
+  padding: 16px;
+  box-shadow: var(--shadow-os);
+  backdrop-filter: blur(16px);
+  display: none;
+  z-index: 1001;
+}
+
+.dex-start-menu.open {
+  display: block;
+}
+
+.start-menu-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 12px;
+}
+
+.start-menu-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 10px 4px;
+  border-radius: var(--radius-md);
+  cursor: pointer;
+  text-align: center;
+}
+
+.start-menu-item:hover {
+  background: rgba(255, 255, 255, 0.08);
+}
+
+.start-item-icon {
+  font-size: 26px;
+  margin-bottom: 4px;
+}
+
+.start-item-title {
+  font-size: 11px;
+  color: var(--os-text);
+  font-weight: 500;
+}
