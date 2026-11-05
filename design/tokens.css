@@ -1,0 +1,35 @@
+:root {
+  /* Camada Pública de Hábitos */
+  --habit-primary: #2563eb;
+  --habit-primary-hover: #1d4ed8;
+  --habit-accent: #10b981;
+  --habit-bg: #f8fafc;
+  --habit-card: #ffffff;
+  --habit-text: #0f172a;
+  --habit-muted: #64748b;
+  --habit-border: #e2e8f0;
+
+  /* Mini Sistema Operacional (Stealth Dark OS) */
+  --os-bg: #090d16;
+  --os-surface: #131b2e;
+  --os-surface-light: #1e293b;
+  --os-border: #334155;
+  --os-accent: #00e5ff;
+  --os-accent-purple: #8b5cf6;
+  --os-danger: #ef4444;
+  --os-warning: #f59e0b;
+  --os-success: #10b981;
+  --os-text: #f1f5f9;
+  --os-muted: #94a3b8;
+
+  /* Tipografia e Raio */
+  --font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  --radius-sm: 8px;
+  --radius-md: 14px;
+  --radius-lg: 20px;
+  --radius-full: 9999px;
+  --shadow-sm: 0 2px 4px rgba(0, 0, 0, 0.05);
+  --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.15);
+  --shadow-os: 0 10px 25px -5px rgba(0, 0, 0, 0.5), 0 8px 10px -6px rgba(0, 0, 0, 0.5);
+  --glow-cyan: 0 0 15px rgba(0, 229, 255, 0.35);
+}

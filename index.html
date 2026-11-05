@@ -1,0 +1,406 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <meta name="theme-color" content="#2563eb">
+  <meta name="description" content="Hábitos - Minha Rotina Diária">
+  <link rel="manifest" href="manifest.json">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='25' fill='%232563eb'/><path d='M30 52 L43 65 L70 35' stroke='white' stroke-width='10' stroke-linecap='round' stroke-linejoin='round' fill='none'/></svg>">
+  <title>Hábitos</title>
+  
+  <link rel="stylesheet" href="design/tokens.css">
+  <link rel="stylesheet" href="design/layout.css">
+  <link rel="stylesheet" href="design/habitos.css">
+  <link rel="stylesheet" href="design/pinpad.css">
+  <link rel="stylesheet" href="design/mini_os.css">
+  <link rel="stylesheet" href="design/componentes.css">
+</head>
+<body>
+  <div id="app-container">
+
+    <!-- 1. CAMADA PÚBLICA DE HÁBITOS (CAMUFLAGEM) -->
+    <div id="view-habitos" class="view-screen active">
+      <div class="habitos-header">
+        <div class="habitos-title-wrap tap-active" id="secret-trigger-title" title="Segure para desbloquear">
+          <h1>Minha Rotina</h1>
+          <div class="habitos-date" id="habitos-date-display">...</div>
+        </div>
+        <div class="secret-trigger-btn tap-active" id="secret-trigger-btn" title="Toque duplo para abrir">
+          ✓
+        </div>
+      </div>
+
+      <div class="progress-card">
+        <div class="progress-header">
+          <span>Progresso de Hoje</span>
+          <span id="progress-count-text">0 / 0</span>
+        </div>
+        <div class="progress-bar-bg">
+          <div class="progress-bar-fill" id="progress-bar-fill" style="width: 0%;"></div>
+        </div>
+        <div class="progress-footer">Mantenha a consistência em sua rotina diária.</div>
+      </div>
+
+      <div class="habits-section-title">
+        <span>Hábitos do Dia</span>
+        <button class="btn-add-habit-inline" id="btn-add-habit">+ Novo Hábito</button>
+      </div>
+
+      <div class="habits-list" id="habits-list-container"></div>
+    </div>
+
+    <!-- 2. TELA DE AUTENTICAÇÃO POR PIN -->
+    <div id="view-auth" class="view-screen">
+      <div class="auth-header">
+        <button class="btn-icon-back" id="btn-back-auth" style="align-self: flex-start;">←</button>
+        <div class="auth-icon-badge">🔒</div>
+        <h2 class="auth-title">HabitOS Seguro</h2>
+        <p class="auth-subtitle">Digite seu PIN para acessar o sistema isolado</p>
+        <div class="auth-error-banner" id="auth-error"></div>
+      </div>
+
+      <div class="pin-dots-container" id="auth-dots">
+        <div class="pin-dot"></div><div class="pin-dot"></div><div class="pin-dot"></div><div class="pin-dot"></div>
+      </div>
+
+      <div class="pin-keypad" id="auth-keypad">
+        <button class="pin-btn" data-val="1">1</button>
+        <button class="pin-btn" data-val="2">2</button>
+        <button class="pin-btn" data-val="3">3</button>
+        <button class="pin-btn" data-val="4">4</button>
+        <button class="pin-btn" data-val="5">5</button>
+        <button class="pin-btn" data-val="6">6</button>
+        <button class="pin-btn" data-val="7">7</button>
+        <button class="pin-btn" data-val="8">8</button>
+        <button class="pin-btn" data-val="9">9</button>
+        <button class="pin-btn action-btn" data-val="bio" id="btn-auth-bio" style="visibility: hidden;">👆</button>
+        <button class="pin-btn" data-val="0">0</button>
+        <button class="pin-btn action-btn" data-val="del">⌫</button>
+      </div>
+    </div>
+
+    <!-- 3. TELA DE CADASTRO DE PINS (MESTRE E PÂNICO) -->
+    <div id="view-setup" class="view-screen">
+      <div class="auth-header">
+        <button class="btn-icon-back" id="btn-back-setup" style="align-self: flex-start;">←</button>
+        <div class="auth-icon-badge" style="background: var(--os-accent);">🛡️</div>
+        <h2 class="auth-title" id="setup-title">Defina seu PIN Mestre</h2>
+        <p class="auth-subtitle" id="setup-subtitle">Acesso ao Mini OS real e a todos os seus arquivos.</p>
+        <div class="auth-error-banner" id="setup-error"></div>
+      </div>
+
+      <div class="pin-dots-container" id="setup-dots">
+        <div class="pin-dot"></div><div class="pin-dot"></div><div class="pin-dot"></div><div class="pin-dot"></div>
+      </div>
+
+      <div class="pin-keypad" id="setup-keypad">
+        <button class="pin-btn" data-val="1">1</button>
+        <button class="pin-btn" data-val="2">2</button>
+        <button class="pin-btn" data-val="3">3</button>
+        <button class="pin-btn" data-val="4">4</button>
+        <button class="pin-btn" data-val="5">5</button>
+        <button class="pin-btn" data-val="6">6</button>
+        <button class="pin-btn" data-val="7">7</button>
+        <button class="pin-btn" data-val="8">8</button>
+        <button class="pin-btn" data-val="9">9</button>
+        <button class="pin-btn action-btn"></button>
+        <button class="pin-btn" data-val="0">0</button>
+        <button class="pin-btn action-btn" data-val="del">⌫</button>
+      </div>
+    </div>
+
+    <!-- 4. ÁREA DE TRABALHO DO MINI OS -->
+    <div id="view-desktop" class="view-screen">
+      <div class="os-status-bar">
+        <div class="os-status-left">
+          <span class="os-clock" id="os-clock-display">00:00</span>
+          <span class="os-badge-encryption" id="os-encryption-badge">AES-256 GCM</span>
+        </div>
+        <div class="os-status-right">
+          <span class="os-files-count" id="os-files-count">0 itens</span>
+          <button class="btn-os-lock" id="btn-os-lock">Trancar 🔒</button>
+        </div>
+      </div>
+
+      <div class="os-desktop-grid">
+        <div class="os-app-card tap-active" id="card-app-files">
+          <div class="app-card-top">
+            <div class="app-card-icon" style="background: linear-gradient(135deg, #3b82f6, #1d4ed8);">📁</div>
+            <span class="app-badge-counter" id="badge-files">0</span>
+          </div>
+          <div class="app-card-bottom">
+            <div class="app-card-title">Arquivos & Pastas</div>
+            <div class="app-card-subtitle">Explorador seguro</div>
+          </div>
+        </div>
+
+        <div class="os-app-card tap-active" id="card-app-gallery">
+          <div class="app-card-top">
+            <div class="app-card-icon" style="background: linear-gradient(135deg, #ec4899, #be185d);">🖼️</div>
+            <span class="app-badge-counter" id="badge-gallery">0</span>
+          </div>
+          <div class="app-card-bottom">
+            <div class="app-card-title">Galeria Segura</div>
+            <div class="app-card-subtitle">Fotos e imagens</div>
+          </div>
+        </div>
+
+        <div class="os-app-card tap-active" id="card-app-media">
+          <div class="app-card-top">
+            <div class="app-card-icon" style="background: linear-gradient(135deg, #8b5cf6, #6d28d9);">🎬</div>
+            <span class="app-badge-counter" id="badge-media">0</span>
+          </div>
+          <div class="app-card-bottom">
+            <div class="app-card-title">Player de Mídia</div>
+            <div class="app-card-subtitle">Vídeos e músicas</div>
+          </div>
+        </div>
+
+        <div class="os-app-card tap-active" id="card-app-docs">
+          <div class="app-card-top">
+            <div class="app-card-icon" style="background: linear-gradient(135deg, #06b6d4, #0891b2);">📄</div>
+            <span class="app-badge-counter" id="badge-docs">0</span>
+          </div>
+          <div class="app-card-bottom">
+            <div class="app-card-title">Documentos</div>
+            <div class="app-card-subtitle">PDFs e textos</div>
+          </div>
+        </div>
+
+        <div class="os-app-card tap-active" id="card-app-notes">
+          <div class="app-card-top">
+            <div class="app-card-icon" style="background: linear-gradient(135deg, #f59e0b, #d97706);">🔐</div>
+          </div>
+          <div class="app-card-bottom">
+            <div class="app-card-title">Notas Secretas</div>
+            <div class="app-card-subtitle">Senhas e anotações</div>
+          </div>
+        </div>
+
+        <div class="os-app-card tap-active" id="card-app-trash">
+          <div class="app-card-top">
+            <div class="app-card-icon" style="background: linear-gradient(135deg, #ef4444, #b91c1c);">🗑️</div>
+          </div>
+          <div class="app-card-bottom">
+            <div class="app-card-title">Lixeira Segura</div>
+            <div class="app-card-subtitle">Triturador de dados</div>
+          </div>
+        </div>
+
+        <div class="os-app-card tap-active" id="card-app-settings">
+          <div class="app-card-top">
+            <div class="app-card-icon" style="background: linear-gradient(135deg, #64748b, #475569);">⚙️</div>
+          </div>
+          <div class="app-card-bottom">
+            <div class="app-card-title">Configurações</div>
+            <div class="app-card-subtitle">PINs, Biometria & Backup</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="os-bottom-dock">
+        <button class="btn-import-dock tap-active" id="btn-import-dock">
+          ➕ Importar Arquivo Seguro
+        </button>
+      </div>
+    </div>
+
+    <!-- MODAL: EXPLORADOR DE ARQUIVOS -->
+    <div id="modal-explorer" class="modal-screen">
+      <div class="modal-header">
+        <div class="modal-header-left">
+          <button class="btn-icon-back" id="btn-explorer-back">←</button>
+          <span class="modal-header-title" id="explorer-title">Arquivos & Pastas</span>
+        </div>
+        <div>
+          <button class="btn-icon-back" id="btn-explorer-new-folder" title="Nova Pasta">📁+</button>
+          <button class="btn-icon-back" id="btn-explorer-add-file" title="Importar">➕</button>
+        </div>
+      </div>
+      <div style="padding: 10px 16px;">
+        <input type="text" id="explorer-search-input" placeholder="Buscar arquivos..." style="width: 100%; padding: 10px 14px; background: var(--os-surface); border: 1px solid var(--os-border); border-radius: var(--radius-md); color: var(--os-text); outline: none;">
+      </div>
+      <div class="modal-body" id="explorer-list"></div>
+    </div>
+
+    <!-- MODAL: VISUALIZADOR DE IMAGENS -->
+    <div id="modal-image-viewer" class="modal-screen viewer-modal">
+      <div class="modal-header">
+        <button class="btn-icon-back btn-close-viewer">←</button>
+        <span class="modal-header-title" id="image-viewer-title">Foto</span>
+        <span></span>
+      </div>
+      <div class="image-viewer-container">
+        <img id="viewer-img" class="image-viewer-img" alt="Visualização Segura">
+      </div>
+    </div>
+
+    <!-- MODAL: PLAYER DE MÍDIA -->
+    <div id="modal-media-player" class="modal-screen viewer-modal">
+      <div class="modal-header">
+        <button class="btn-icon-back btn-close-viewer">←</button>
+        <span class="modal-header-title" id="media-player-title">Mídia</span>
+        <span></span>
+      </div>
+      <div class="media-player-container" id="media-player-mount"></div>
+    </div>
+
+    <!-- MODAL: LEITOR DE DOCUMENTOS -->
+    <div id="modal-doc-viewer" class="modal-screen viewer-modal">
+      <div class="modal-header">
+        <button class="btn-icon-back btn-close-viewer">←</button>
+        <span class="modal-header-title" id="doc-viewer-title">Documento</span>
+        <span></span>
+      </div>
+      <div class="modal-body">
+        <pre id="doc-viewer-content" style="color: var(--os-text); font-family: monospace; white-space: pre-wrap; font-size: 13px; line-height: 1.5;"></pre>
+      </div>
+    </div>
+
+    <!-- MODAL: NOTAS SECRETAS -->
+    <div id="modal-notes" class="modal-screen">
+      <div class="modal-header">
+        <button class="btn-icon-back" id="btn-notes-back">←</button>
+        <span class="modal-header-title">Notas Secretas</span>
+        <button class="btn-icon-back" id="btn-notes-new" title="Nova Nota">✏️+</button>
+      </div>
+      <div class="modal-body">
+        <div id="notes-list-view">
+          <div id="notes-list"></div>
+        </div>
+        <div id="notes-editor-view" style="display: none;">
+          <input type="text" id="note-title-input" class="note-input-title" placeholder="Título da nota...">
+          <textarea id="note-body-input" class="note-input-body" placeholder="Digite seus segredos, credenciais ou notas..."></textarea>
+          <button class="btn-import-dock" id="btn-note-save" style="margin-top: 10px;">Salvar Nota</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- MODAL: LIXEIRA SEGURA -->
+    <div id="modal-trash" class="modal-screen">
+      <div class="modal-header">
+        <button class="btn-icon-back" id="btn-trash-back">←</button>
+        <span class="modal-header-title">Lixeira Segura</span>
+        <button class="btn-icon-back" id="btn-empty-trash" style="color: var(--os-danger); font-size: 13px;">Esvaziar</button>
+      </div>
+      <div class="modal-body" id="trash-list"></div>
+    </div>
+
+    <!-- MODAL: CONFIGURAÇÕES -->
+    <div id="modal-settings" class="modal-screen">
+      <div class="modal-header">
+        <button class="btn-icon-back" id="btn-settings-back">←</button>
+        <span class="modal-header-title">Segurança & Sistema</span>
+        <span></span>
+      </div>
+      <div class="modal-body" style="display: flex; flex-direction: column; gap: 20px;">
+        <div style="background: var(--os-surface); border: 1px solid var(--os-border); border-radius: var(--radius-md); padding: 16px;">
+          <h4 style="font-size: 14px; margin-bottom: 12px; color: var(--os-accent);">AUTENTICAÇÃO & PROTEÇÃO</h4>
+          <label style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 14px; font-size: 14px;">
+            <span>Desbloqueio por Biometria</span>
+            <input type="checkbox" id="setting-bio-toggle">
+          </label>
+          <label style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 14px; font-size: 14px;">
+            <span>Tempo de Auto-bloqueio</span>
+            <select id="setting-lock-select" style="background: var(--os-surface-light); color: var(--os-text); border: 1px solid var(--os-border); border-radius: 6px; padding: 4px 8px;">
+              <option value="1">1 minuto</option>
+              <option value="3">3 minutos</option>
+              <option value="5">5 minutos</option>
+            </select>
+          </label>
+          <button id="btn-setting-reset-pins" class="tap-active" style="width: 100%; padding: 10px; background: rgba(239, 68, 68, 0.2); border: 1px solid rgba(239, 68, 68, 0.4); border-radius: var(--radius-sm); color: var(--os-danger); font-weight: 600; cursor: pointer;">
+            Redefinir PINs de Acesso
+          </button>
+        </div>
+
+        <div style="background: var(--os-surface); border: 1px solid var(--os-border); border-radius: var(--radius-md); padding: 16px;">
+          <h4 style="font-size: 14px; margin-bottom: 12px; color: var(--os-accent);">BACKUP CRIPTOGRAFADO</h4>
+          <button id="btn-setting-export" class="tap-active" style="width: 100%; padding: 10px; background: var(--os-surface-light); border: 1px solid var(--os-border); border-radius: var(--radius-sm); color: var(--os-text); font-weight: 600; margin-bottom: 10px; cursor: pointer;">
+            Exportar Pacote .vault
+          </button>
+          <button id="btn-setting-restore" class="tap-active" style="width: 100%; padding: 10px; background: var(--os-surface-light); border: 1px solid var(--os-border); border-radius: var(--radius-sm); color: var(--os-text); font-weight: 600; cursor: pointer;">
+            Restaurar Pacote .vault
+          </button>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- ROTEAMENTO E INICIALIZAÇÃO -->
+  <script type="module">
+    import { HabitosController } from './logica/ui_controllers/habitos_controller.js';
+    import { AuthController } from './logica/ui_controllers/auth_controller.js';
+    import { OsDesktopController } from './logica/ui_controllers/os_desktop_controller.js';
+    import { ExplorerController } from './logica/ui_controllers/explorer_controller.js';
+    import { ViewersController } from './logica/ui_controllers/viewers_controller.js';
+    import { NotesController } from './logica/ui_controllers/notes_controller.js';
+    import { SettingsController } from './logica/ui_controllers/settings_controller.js';
+    import { SessionManager } from './logica/servicos/session_manager.js';
+
+    function navigate() {
+      const hash = window.location.hash || '#habitos';
+      const screens = document.querySelectorAll('.view-screen');
+      screens.forEach((s) => s.classList.remove('active'));
+
+      if (hash === '#desktop') {
+        if (!SessionManager.isUnlocked()) {
+          window.location.hash = '#auth';
+          return;
+        }
+        document.getElementById('view-desktop').classList.add('active');
+        OsDesktopController.refreshDesktop();
+      } else if (hash === '#auth') {
+        AuthController.resetAuth();
+        document.getElementById('view-auth').classList.add('active');
+      } else if (hash === '#setup') {
+        AuthController.resetSetup();
+        document.getElementById('view-setup').classList.add('active');
+      } else {
+        document.getElementById('view-habitos').classList.add('active');
+        HabitosController.renderHabits();
+      }
+    }
+
+    window.addEventListener('hashchange', navigate);
+
+    document.addEventListener('DOMContentLoaded', () => {
+      SessionManager.init();
+      HabitosController.init();
+      AuthController.init();
+      OsDesktopController.init();
+      ExplorerController.init();
+      ViewersController.init();
+      NotesController.init();
+      SettingsController.init();
+
+      // Mapeamento dos cards do desktop
+      document.getElementById('card-app-files').onclick = () => ExplorerController.open(null, 'Arquivos & Pastas');
+      document.getElementById('card-app-gallery').onclick = () => ExplorerController.open('image', 'Galeria Segura');
+      document.getElementById('card-app-media').onclick = () => ExplorerController.open('video', 'Vídeos & Áudios');
+      document.getElementById('card-app-docs').onclick = () => ExplorerController.open('document', 'Documentos');
+      document.getElementById('card-app-notes').onclick = () => NotesController.open();
+      document.getElementById('card-app-trash').onclick = () => SettingsController.openTrash();
+      document.getElementById('card-app-settings').onclick = () => SettingsController.openSettings();
+
+      SessionManager.subscribe((event) => {
+        if (event === 'locked') {
+          ViewersController.closeAll();
+          ExplorerController.close();
+          NotesController.close();
+          SettingsController.closeSettings();
+          SettingsController.closeTrash();
+          window.location.hash = '#habitos';
+        }
+      });
+
+      if ('serviceWorker' in navigator) {
+        navigator.serviceWorker.register('sw.js').catch(() => {});
+      }
+
+      navigate();
+    });
+  </script>
+</body>
+</html>

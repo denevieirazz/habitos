@@ -1,0 +1,174 @@
+#view-desktop {
+  background-color: var(--os-bg);
+  color: var(--os-text);
+  display: flex;
+  flex-direction: column;
+}
+
+/* Barra de Status do SO */
+.os-status-bar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 16px;
+  background: rgba(19, 27, 46, 0.9);
+  border-bottom: 1px solid rgba(51, 65, 85, 0.6);
+  backdrop-filter: blur(10px);
+}
+
+.os-status-left {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.os-clock {
+  font-size: 14px;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+}
+
+.os-badge-encryption {
+  font-size: 10px;
+  font-weight: 700;
+  padding: 3px 8px;
+  border-radius: var(--radius-sm);
+  background: rgba(0, 229, 255, 0.15);
+  border: 1px solid var(--os-accent);
+  color: var(--os-accent);
+  letter-spacing: 0.8px;
+}
+
+.os-badge-encryption.panic {
+  background: rgba(245, 158, 11, 0.2);
+  border-color: var(--os-warning);
+  color: var(--os-warning);
+}
+
+.os-status-right {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.os-files-count {
+  font-size: 12px;
+  color: var(--os-muted);
+}
+
+.btn-os-lock {
+  background: rgba(239, 68, 68, 0.2);
+  border: 1px solid rgba(239, 68, 68, 0.4);
+  color: var(--os-danger);
+  font-size: 11px;
+  font-weight: 700;
+  padding: 5px 10px;
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+/* Desktop Grid */
+.os-desktop-grid {
+  flex: 1;
+  padding: 20px;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 16px;
+  overflow-y: auto;
+  align-content: start;
+}
+
+.os-app-card {
+  background: var(--os-surface);
+  border: 1px solid rgba(51, 65, 85, 0.6);
+  border-radius: var(--radius-lg);
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  height: 125px;
+  cursor: pointer;
+  box-shadow: var(--shadow-os);
+  transition: transform 0.15s ease, border-color 0.2s ease;
+}
+
+.os-app-card:active {
+  transform: scale(0.96);
+  border-color: var(--os-accent);
+}
+
+.app-card-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+}
+
+.app-card-icon {
+  width: 44px;
+  height: 44px;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #ffffff;
+  font-size: 20px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+}
+
+.app-badge-counter {
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--os-accent);
+  background: var(--os-surface-light);
+  padding: 2px 8px;
+  border-radius: var(--radius-sm);
+}
+
+.app-card-bottom {
+  margin-top: 8px;
+}
+
+.app-card-title {
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--os-text);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.app-card-subtitle {
+  font-size: 11px;
+  color: var(--os-muted);
+  margin-top: 2px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* Dock Inferior */
+.os-bottom-dock {
+  padding: 14px 20px;
+  background: var(--os-surface);
+  border-top: 1px solid rgba(51, 65, 85, 0.6);
+}
+
+.btn-import-dock {
+  width: 100%;
+  padding: 14px;
+  background: var(--os-accent);
+  color: #000000;
+  border: none;
+  border-radius: var(--radius-md);
+  font-size: 14px;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  cursor: pointer;
+  box-shadow: var(--glow-cyan);
+}
